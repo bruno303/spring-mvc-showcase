@@ -1,31 +1,18 @@
 package org.springframework;
 
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.startup.Tomcat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.service.TomcatService;
 
-import javax.servlet.ServletException;
 import java.io.File;
 
 public class SpringMvcShowCaseApplication {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringMvcShowCaseApplication.class);
-    private static final int PORT = 8085;
+    private static final int PORT = 8080;
 
-    public static void main(String[] args) throws LifecycleException, ServletException {
-        Tomcat tomcat = new Tomcat();
-        String baseDir = new File("src/main/webapp").getAbsolutePath();
+    public static void main(String[] args) {
+        final TomcatService tomcatService = new TomcatService();
 
-        LOGGER.info("## Configuring tomcat port: {}", PORT);
-        tomcat.setPort(PORT);
-
-        LOGGER.info("## Adding webapp with directory: {}", baseDir);
-        tomcat.addWebapp("/", baseDir);
-
-        LOGGER.info("## Starting tomcat: {}", baseDir);
-        tomcat.start();
-        tomcat.getServer().await();
+        File baseDir = new File("src/main/webapp");
+        tomcatService.createAndStartTomcatServer(baseDir, PORT);
     }
 
 }
